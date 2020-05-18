@@ -8,6 +8,8 @@ from . import models
 from . import permission
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.authtoken.views import ObtainAuthToken
 # Create your views here.
 
 class Hello_APIView(APIView):
@@ -61,7 +63,6 @@ class HelloViewsets(viewsets.ViewSet):
         if serializer.is_valid():
             name = serializer.data.get('name')
             message = 'Hello {0}'.format(name)
-            print("Done")
             return Response({'message': message})
 
         else:
@@ -95,6 +96,30 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserProfileSerializer
     queryset = models.UserProfile.objects.all()
     authentication_classes = (TokenAuthentication,)
-    permission_class = (permission.UpdateOwnProfile,)
+    permission_classes = (permission.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'email',)
+
+
+
+class UserProfileFeedViewSet(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.ProfileFeedItemSerializer
+    queryset = models.ProfileFeedItem.objects.all()
+
+    def create(self,request):
+        serializer = serializers.ProfileFeedItemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': request.user})
+
+
+
+class LoginAPI(viewsets.ViewSet):
+    """Checks email and password and returns an auth token."""
+
+    serializer_class = AuthTokenSerializer
+    def create(self, request):
+        """Use the ObtainAuthToken APIView to validate and create a token."""
+
+        return ObtainAuthToken().post(request)
