@@ -111,7 +111,7 @@ class UserProfileFeedViewSet(viewsets.ModelViewSet):
         serializer = serializers.ProfileFeedItemSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'message': request.user})
+            return Response({'message': request.data["status_text"]})
 
 
 
