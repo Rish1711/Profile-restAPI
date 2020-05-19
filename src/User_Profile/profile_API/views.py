@@ -111,7 +111,13 @@ class UserProfileFeedViewSet(viewsets.ModelViewSet):
         serializer = serializers.ProfileFeedItemSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'message': request.data["status_text"]})
+            return Response({'message': serializer.data})
+
+    def destroy(self, request, pk=None):
+        """Handle removing an object"""
+
+        return Response({'http_method': 'DELETE'})
+
 
 
 
