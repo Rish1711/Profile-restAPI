@@ -25,7 +25,7 @@ SECRET_KEY = 'nm)k81pgpv5-kv#n1&69n^z$p3kl%8k&37tcut@2_f=vpv36__'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ec2-13-127-38-230.ap-south-1.compute.amazonaws.com']
+ALLOWED_HOSTS = ['ec2-13-233-224-156.ap-south-1.compute.amazonaws.com']
 
 
 # Application definition
